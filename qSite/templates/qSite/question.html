@@ -1,0 +1,175 @@
+{% extends "qSite/base.html" %}
+{% load static %}
+{% block content %}
+<h1 style="text-align: center;">Question</h1>
+<div class="row">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-header">
+        <a href="#"><img src="{% static "img/avatar.jpg" %}" alt="avatar" class="rounded-circle"></a>
+        <a href="#">*Username*</a>
+        <span class="text-muted"> asks about:</span>
+        <hr>
+        <h5 class="card-title">Question title here</h5>
+      </div>
+      <div class="card-body">
+        <p class="card-text">Question text</p>
+      </div>
+      <div class="card-footer text-muted">Posted 5 mins ago, tags:
+        <a href="#">HTML</a>, <a href="#">CSS</a>
+        <a href="#" class="text-danger float-right mr-2"><i class="far fa-thumbs-down"></i>10</a> 
+        <a href="#" class="text-success float-right mr-2"><i class="far fa-thumbs-up"></i>23</a>
+      </div>
+    </div>
+  </div>
+</div>
+<hr>
+<!-- response -->
+<div class="row">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-header">
+        <a href="#"><img src="{% static "img/avatar.jpg" %}" alt="avatar" class="rounded-circle"></a>
+        <a href="#">*Username*</a>
+        <span class="text-muted"> answers:</span>
+        {% if not answer_is_correct %}
+          <i class="fas fa-check float-right h2 text-success"></i>
+        {% endif %}
+      </div>
+      <div class="card-body">
+        <p class="card-text">Answer text</p>
+      </div>
+      <div class="card-footer text-muted">
+        <div class="row mt-0">
+          <div class="col-md-9">
+            Posted 5 mins ago, tags:
+            <a href="#">HTML</a>, <a href="#">CSS</a>
+            <a href="#" class="text-danger float-right mr-2"><i class="far fa-thumbs-down"></i>10</a> 
+            <a href="#" class="text-success float-right mr-2"><i class="far fa-thumbs-up"></i>23</a>
+          </div>
+          <div class="col-md-3">
+            {% if answer_is_correct %}
+              <button type="button" class="btn btn-success btn-sm float-right mr-2">Correct</button>
+            {% else %}
+              <button type="button" class="btn btn-danger btn-sm float-right mr-2">Incorrect</button>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-header">
+        <a href="#"><img src="{% static "img/avatar.jpg" %}" alt="avatar" class="rounded-circle"></a>
+        <a href="#">*Username*</a>
+        <span class="text-muted"> answers:</span>
+        {% if answer_is_correct %}
+          <i class="fas fa-check float-right h2 text-success"></i>
+        {% endif %}
+      </div>
+      <div class="card-body">
+        <p class="card-text">Answer text</p>
+      </div>
+      <div class="card-footer text-muted">
+        <div class="row mt-0">
+          <div class="col-md-9">
+            Posted 5 mins ago, tags:
+            <a href="#">HTML</a>, <a href="#">CSS</a>
+            <a href="#" class="text-danger float-right mr-2"><i class="far fa-thumbs-down"></i>10</a> 
+            <a href="#" class="text-success float-right mr-2"><i class="far fa-thumbs-up"></i>23</a>
+          </div>
+          <div class="col-md-3">
+            {% if not answer_is_correct %}
+              <button type="button" class="btn btn-success btn-sm float-right mr-2">Correct</button>
+            {% else %}
+              <button type="button" class="btn btn-danger btn-sm float-right mr-2">Incorrect</button>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-header">
+        <a href="#"><img src="{% static "img/avatar.jpg" %}" alt="avatar" class="rounded-circle"></a>
+        <a href="#">*Username*</a>
+        <span class="text-muted"> answers:</span>
+        {% if answer_is_correct %}
+          <i class="fas fa-check float-right h2 text-success"></i>
+        {% endif %}
+      </div>
+      <div class="card-body">
+        <p class="card-text">Answer text</p>
+      </div>
+      <div class="card-footer text-muted">
+        <div class="row mt-0">
+          <div class="col-md-9">
+            Posted 5 mins ago, tags:
+            <a href="#">HTML</a>, <a href="#">CSS</a>
+            <a href="#" class="text-danger float-right mr-2"><i class="far fa-thumbs-down"></i>10</a> 
+            <a href="#" class="text-success float-right mr-2"><i class="far fa-thumbs-up"></i>23</a>
+          </div>
+          <div class="col-md-3">
+            {% if not answer_is_correct %}
+              <button type="button" class="btn btn-success btn-sm float-right mr-2">Correct</button>
+            {% else %}
+              <button type="button" class="btn btn-danger btn-sm float-right mr-2">Incorrect</button>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-header">
+        <a href="#"><img src="{% static "img/avatar.jpg" %}" alt="avatar" class="rounded-circle"></a>
+        <a href="#">*Username*</a>
+        <span class="text-muted"> answers:</span>
+        {% if answer_is_correct %}
+          <i class="fas fa-check float-right h2 text-success"></i>
+        {% endif %}
+      </div>
+      <div class="card-body">
+        <p class="card-text">Answer text</p>
+      </div>
+      <div class="card-footer text-muted">
+        <div class="row mt-0">
+          <div class="col-md-9">
+            Posted 5 mins ago, tags:
+            <a href="#">HTML</a>, <a href="#">CSS</a>
+            <a href="#" class="text-danger float-right mr-2"><i class="far fa-thumbs-down"></i>10</a> 
+            <a href="#" class="text-success float-right mr-2"><i class="far fa-thumbs-up"></i>23</a>
+          </div>
+          <div class="col-md-3">
+            {% if not answer_is_correct %}
+              <button type="button" class="btn btn-success btn-sm float-right mr-2">Correct</button>
+            {% else %}
+              <button type="button" class="btn btn-danger btn-sm float-right mr-2">Incorrect</button>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}
+{% block pagination %}
+<nav>
+  <ul class="pagination  justify-content-center" style="margin-top: 1rem">
+    <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+    <li class="page-item active"><a class="page-link" href="#">1</a></li>
+    <li class="page-item"><a class="page-link" href="#">2</a></li>
+    <li class="page-item"><a class="page-link" href="#">3</a></li>
+    <li class="page-item"><a class="page-link" href="#">Next</a></li>
+  </ul>
+</nav>
+{% endblock pagination %}

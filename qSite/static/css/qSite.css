@@ -1,0 +1,42 @@
+/*html {
+  position: relative;
+  min-height: 100%;
+}*/
+body {
+  margin-bottom: 4rem;
+  padding-top: 4rem;
+}
+
+.footer {
+  /*position: fixed;*/
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: 3rem;
+  line-height: 3rem; /* Vertically center the text there */
+  background-color: #f5f5f5;
+}
+
+body > .container {
+  padding: 15px 15px 0;
+  margin-left: 15px;
+  margin-right: 15px;
+}
+
+/*div {
+  border :1px solid pink;
+}*/
+
+
+code {
+  font-size: 80%;
+}
+.row + .row {
+  margin-top: 2rem 
+}
+.list-group + .list-group {
+  margin-top: 2rem 
+}
+.side-col {
+  margin-top: 4rem;
+}
