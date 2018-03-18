@@ -1,17 +1,15 @@
 {% extends "qSite/base.html" %}
 {% load static %}
 {% block content %}
+<h1>{{ tag }}</h1>
+<hr>
 
-<h1>Question</h1>
-<hr>
-{% include "qSite/question_template.html" %}
-<hr>
-<!-- response -->
-{% for answer in answers %}
-  {% include "qSite/answer_template.html" %}
+{% for question in questions %}
+  {% include "qSite/question_template.html" %}
 {% endfor %}
 
 {% endblock content %}
+
 {% block pagination %}
   {% include "qSite/pagination.html" %}
 {% endblock pagination %}

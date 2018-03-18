@@ -1,4 +1,5 @@
-{% load staticfiles %}
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,15 +11,15 @@
 <body>
   <header>
     <nav class="navbar navbar-expand-md navbar-light fixed-top bg-light border rounded-bottom">
-      <a href="#" class="navbar-brand"><img src="{% static "img/logo.png" %}" alt="logo" height="42" width="42"></a>
-      <a class="navbar-brand mr-auto" href="#">Response-Ask</a>
+      <a href="{% url 'index' %}" class="navbar-brand"><img src="{% static "img/logo.png" %}" alt="logo" height="42" width="42"></a>
+      <a class="navbar-brand mr-auto" href="{% url 'index' %}">Response-Ask</a>
       <div class="collapse navbar-collapse" id="navbarCollapse">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item">
-            <a class="nav-link active ml-5" href="#">Questions</a>
+            <a class="nav-link active ml-5" href="{% url 'index' %}">Questions</a>
           </li>
           <li class="nav-item active">
-            <button class="btn btn-success navbar-btn ml-2" type="submit">Ask!</button>
+            <a class="btn btn-success navbar-btn ml-2" href="{% url 'newQuestion' %}">Ask!</a>
           </li>
         </ul>
         <ul class="navbar-nav ml-5 w-100 justify-content-center">
@@ -42,10 +43,10 @@
         {% else %}
         <ul class="navbar-nav ml-auto w-100 justify-content-end">
           <li class="nav-item">
-            <a class="nav-link active" href="#">Sign up</a>
+            <a class="nav-link active" href="{% url 'signup' %}">Sign up</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" href="#">Sign in</a>
+            <a class="nav-link active" href="{% url 'signin' %}">Sign in</a>
           </li>
         </ul>
         {% endif %}
@@ -68,15 +69,15 @@
           <ul class="list-group">
             <li class="list-group-item active">Popular Tags</li>
             <li class="list-group-item">
-              <a href="#">HTML</a>
+              <a href="{% url 'tag' 'HTML' %}">HTML</a>
               <span class="badge badge-primary badge-pill float-right">12</span>
             </li>
             <li class="list-group-item">
-              <a href="#">CSS</a>
+              <a href="{% url 'tag' 'CSS' %}">CSS</a>
               <span class="badge badge-primary badge-pill float-right">9</span>
             </li>
             <li class="list-group-item">
-              <a href="#">C++</a>
+              <a href="{% url 'tag' 'C++' %}">C++</a>
               <span class="badge badge-primary badge-pill float-right">4</span>
             </li>
           </ul>

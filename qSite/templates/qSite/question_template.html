@@ -1,0 +1,32 @@
+{% load static %}
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-header">
+        <a href="#"><img src="{% static "img/avatar.jpg" %}" alt="avatar" class="rounded-circle"></a>
+        <a href="#">*Username*</a>
+        <span class="text-muted"> asks about:</span>
+        <hr>
+        <a href="{% url 'question' question.id %}"><h5 class="card-title">{{ question.title }}</h5></a>
+      </div>
+      <div class="card-body">
+        <p class="card-text">{{ question.text }}</p>
+      </div>
+      <div class="card-footer text-muted">Posted 5 mins ago, tags:
+        {% for tagName in question.tags %}
+          <a href="{% url 'tag' tagName %}">{{ tagName }}</a>
+        {% endfor %}
+        <!-- data-toggle="button" aria-pressed="false" autocomplete="off" https://getbootstrap.com/docs/4.0/components/buttons/#toggle-states -->
+        <button type="button" data-toggle="button" class="btn btn-outline-danger btn-sm float-right mr-2">
+          <i class="far fa-thumbs-down"></i>{{ question.dislikes }}
+        </button>
+        <button type="button" data-toggle="button" class="btn btn-outline-success btn-sm float-right mr-2">
+          <i class="far fa-thumbs-up"></i>{{ question.likes }}
+        </button>
+        <!-- <a href="#" class="btn btn-sm text-danger float-right mr-2"><i class="far fa-thumbs-down"></i>{{ question.dislikes }}</a> 
+        <a href="#" class="btn btn-sm text-success float-right mr-2"><i class="far fa-thumbs-up"></i>{{ question.likes }}</a> -->
+      </div>
+    </div>
+  </div>
+</div>
