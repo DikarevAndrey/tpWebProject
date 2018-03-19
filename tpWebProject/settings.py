@@ -56,7 +56,7 @@ ROOT_URLCONF = 'tpWebProject.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['/Users/andrey/TechnoPark/WEB/tpWebProject/qSite/templates/'],
+        'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
