@@ -22,7 +22,7 @@ def paginate(request, objects_list, limit):
 
 
 def index(request):
-  if request.path == '/qSite/hot':
+  if request.path == '/qsite/hot':
     tab = 'hot'
   else:
     tab = 'new'

@@ -11,7 +11,13 @@
         <a href="{% url 'question' question.id %}"><h5 class="card-title">{{ question.title }}</h5></a>
       </div>
       <div class="card-body">
-        <p class="card-text">{{ question.text }}</p>
+        <p class="card-text">
+          {% if answers %}
+            {{ question.text }}
+          {% else %}
+            {{ question.text|truncatechars:200 }}
+          {% endif %}
+        </p>
       </div>
       <div class="card-footer text-muted">Posted 5 mins ago, tags:
         {% for tagName in question.tags %}

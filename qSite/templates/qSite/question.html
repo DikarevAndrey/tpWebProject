@@ -1,5 +1,10 @@
 {% extends "qSite/base.html" %}
 {% load static %}
+
+{% block title %}
+  {{ question.title }}
+{% endblock title %}
+
 {% block content %}
 
 <h1>Question</h1>

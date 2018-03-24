@@ -123,4 +123,7 @@ STATIC_URL = '/static/'
 # STATICFILES_DIRS = [
 #     '/Users/andrey/TechnoPark/WEB/tpWebProject/qSite/static/',
 # ]
-STATIC_ROOT = 'qSite/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, '/qSite/static/')
+
+MEDIA_ROOT = os.path.join(BASE_DIR, '/qSite/static/uploads/')
+MEDIA_URL = '/uploads/'

@@ -1,5 +1,10 @@
 {% extends "qSite/base.html" %}
 {% load static %}
+
+{% block title %}
+  {{ tab|title }} Questions
+{% endblock title %}
+
 {% block content %}
 
 {% if tab == 'new' %}
