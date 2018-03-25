@@ -38,7 +38,7 @@ class Like(models.Model):
 
 
 class Question(models.Model):
-  title = models.CharField(max_length=50, verbose_name="Title of the question")
+  title = models.CharField(max_length=100, verbose_name="Title of the question")
   text = models.TextField(verbose_name="Full text of the question")
   dateTime = models.DateTimeField(default=timezone.now, verbose_name="Date and time the question was published")
   author = models.ForeignKey(Profile, null=False, verbose_name="Author of the question", on_delete=models.DO_NOTHING)
