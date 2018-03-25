@@ -1,17 +1,22 @@
 from django.db import models
+from django.db.models import Count
 
 class UserManager(models.Manager):
 
   def by_username(self, _username):
     return self.filter(user__username=_username)[0]
-    # return self.get(user__username=_username)
+
+  def by_rating(self):
+    return self.order_by('rating')
 
 
 class TagManager(models.Manager):
 
   def by_tag_newest(self, _tag):
-    return self.filter(name=_tag)[0].questions.all().order_by('dateTime').reverse()
-    # return self.get(name=_tag).questions.all().order_by('dateTime')
+    return self.filter(name=_tag)[0].questions.all().order_by('-dateTime')
+
+  def hottest(self):
+    return self.annotate(question_count=Count('questions')).order_by('-question_count')
 
 
 class LikeManager(models.Manager):
@@ -21,10 +26,10 @@ class LikeManager(models.Manager):
 class QuestionManager(models.Manager):
 
   def newest(self):
-    return self.order_by('dateTime').reverse()
+    return self.order_by('-dateTime')
 
   def hottest(self):
-    return self.order_by('rating').reverse()
+    return self.order_by('-rating')
 
   def by_id(self, _id):
     return self.filter(pk=_id)[0]
@@ -33,4 +38,4 @@ class QuestionManager(models.Manager):
 class AnswerManager(models.Manager):
   
   def hottest(self, qid):
-    return self.filter(question__id=qid).order_by('rating').reverse()
+    return self.filter(question__id=qid).order_by('-rating')

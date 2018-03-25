@@ -2,7 +2,7 @@ from django.http import HttpResponse, HttpResponseBadRequest
 from django.shortcuts import render
 from random import randint
 from django.core.paginator import Paginator
-
+from qSite.models import *
 
 def paginate(request, objects_list, limit):
   page = request.GET.get('page') or 1
@@ -21,84 +21,54 @@ def paginate(request, objects_list, limit):
   return page
 
 
+def add_tags_users_to_context(context):
+  top_users = Profile.objects.by_rating()[:3]
+  top_tags = Tag.objects.hottest()[:3]
+  context['top_users'] = top_users
+  context['top_tags'] = top_tags
+  return context
+
+
 def index(request):
   if request.path == '/qsite/hot':
     tab = 'hot'
+    questions = Question.objects.hottest()
   else:
     tab = 'new'
-  questions = []
-  for i in range(1, 46):
-    tags = []
-    for j in range(1, 4):
-      tags.append('tag' + str(i) + str(j))
-    questions.append({
-      'title': 'title ' + str(i),
-      'id': i,
-      'text': 'text' + str(i),
-      'tags': tags,
-      'likes': str(randint(0, 50)),
-      'dislikes': str(randint(0, 50))
-    })
+    questions = Question.objects.newest()
   page = paginate(request, questions, 20)
   context = {'questions': page.object_list, 'tab': tab, 'page': page}
+  context = add_tags_users_to_context(context)
   return render(request, 'qSite/index.html', context)
 
+
 def newQuestion(request):
-  return render(request, 'qSite/ask.html')
+  context = add_tags_users_to_context({})
+  return render(request, 'qSite/ask.html', context)
+
 
 def question(request, questionId):
-  tags = []
-  for i in range(1, 4):
-    tags.append('tag' + str(i) + str(i))
-  question = {
-    'id': questionId,
-    'title': 'title ' + str(questionId),
-    'text': 'text' + str(questionId),
-    'tags': tags,
-    'likes': str(randint(0, 50)),
-    'dislikes': str(randint(0, 50))
-  }
-  answers = []
-  answers.append({
-    'text': 'text' + str(1),
-    'correct': 'true',
-    'likes': str(20),
-    'dislikes': str(4)
-  })
-  for i in range(2, 50):
-    answers.append({
-      'text': 'text' + str(i),
-      'correct': 'false',
-      'likes': str(randint(0, 50)),
-      'dislikes': str(randint(0, 50))
-    })
-
+  question = Question.objects.by_id(questionId)
+  answers = Answer.objects.hottest(questionId)
   page = paginate(request, answers, 30)
   context = {'question': question, 'answers': page.object_list, 'page': page}
+  context = add_tags_users_to_context(context)
   return render(request, 'qSite/question.html', context)
 
+
 def signin(request):
-  return render(request, 'qSite/login.html')
+  context = add_tags_users_to_context({})
+  return render(request, 'qSite/login.html', context)
+
 
 def signup(request):
-  return render(request, 'qSite/signup.html')
+  context = add_tags_users_to_context({})
+  return render(request, 'qSite/signup.html', context)
+
 
 def tag(request, tagName):
-  questions = []
-  for i in range(1, 46):
-    tags = []
-    for j in range(1, 3):
-      tags.append('tag' + str(i) + str(j))
-    tags.append(tagName)
-    questions.append({
-      'title': 'title ' + str(i),
-      'id': i,
-      'text': 'text' + str(i),
-      'tags': tags,
-      'likes': str(randint(0, 50)),
-      'dislikes': str(randint(0, 50))
-    })
-
+  questions = Tag.objects.by_tag_newest(tagName)
   page = paginate(request, questions, 20)
   context = {'questions': page.object_list, 'tag': tagName, 'page': page}
+  context = add_tags_users_to_context(context)
   return render(request, 'qSite/tag.html', context)

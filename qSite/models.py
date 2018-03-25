@@ -42,7 +42,7 @@ class Question(models.Model):
   text = models.TextField(verbose_name="Full text of the question")
   dateTime = models.DateTimeField(default=timezone.now, verbose_name="Date and time the question was published")
   author = models.ForeignKey(Profile, null=False, verbose_name="Author of the question", on_delete=models.DO_NOTHING)
-  tags = models.ManyToManyField(Tag, blank=True, verbose_name="Tags of the question")
+  tags = models.ManyToManyField(Tag, blank=True, verbose_name="Tags of the question", related_name='questions')
   likes = models.ManyToManyField(Like, blank=True, verbose_name="Likes of the question", related_name='questions')
   rating = models.IntegerField(default=0, verbose_name="Votes ratio")
 

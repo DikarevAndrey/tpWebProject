@@ -16,7 +16,7 @@
       <div class="card-footer text-muted">
         <div class="row mt-0">
           <div class="col-md-9">
-            Posted 5 mins ago.
+            Posted {{ answer.dateTime|timesince }} ago.
             <!-- data-toggle="button" aria-pressed="false" autocomplete="off" https://getbootstrap.com/docs/4.0/components/buttons/#toggle-states -->
             <button type="button" data-toggle="button" class="btn btn-outline-danger btn-sm float-right mr-2">
               <i class="far fa-thumbs-down"></i>{{ question.dislikes }}
