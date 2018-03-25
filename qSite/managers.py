@@ -13,6 +13,7 @@ class TagManager(models.Manager):
     return self.filter(name=_tag)[0].questions.all().order_by('dateTime').reverse()
     # return self.get(name=_tag).questions.all().order_by('dateTime')
 
+
 class LikeManager(models.Manager):
   pass
 

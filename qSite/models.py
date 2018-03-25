@@ -22,6 +22,9 @@ class Tag(models.Model):
   def __str__(self):
     return self.name
 
+  class Meta:
+    ordering = ['name']
+
 
 class Like(models.Model):
   VALUES = ((-1, 'DISLIKE'), (1, 'LIKE'))
@@ -48,6 +51,9 @@ class Question(models.Model):
   def __str__(self):
     return self.text
 
+  class Meta:
+    ordering = ['-dateTime']
+
 
 class Answer(models.Model):
   question = models.ForeignKey(Question, null=False, on_delete=models.CASCADE, verbose_name="Question that is being answered")
@@ -62,3 +68,6 @@ class Answer(models.Model):
 
   def __str__(self):
     return self.text
+
+  class Meta:
+    ordering = ['-dateTime']
