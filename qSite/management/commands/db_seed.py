@@ -26,16 +26,14 @@ class Command(BaseCommand):
 
     fake = Faker()
     for i in range(0, self.USERS_COUNT):
-      username = fake.simple_profile().get("username")
-      user = User.objects.create_user(username=username, password=username)
+      username = fake.simple_profile().get("username") + str(i)
+      user = Profile.objects.create_user(username=username, password=username)
       user.first_name = fake.first_name()
       user.last_name = fake.last_name()
+      user.rating = random.randint(-50, 50)
       user.save()
 
-      profile = Profile(user=user)
-      profile.rating = random.randint(-50, 50)
-      profile.save()
-      list_of_users.append(profile)
+      list_of_users.append(user)
 
     self.stdout.write(self.style.SUCCESS('Successfully generated users.'))
     return list_of_users
@@ -47,7 +45,8 @@ class Command(BaseCommand):
 
     fake = Faker()
     for i in range(0, self.TAGS_COUNT):
-      tag = Tag(name=fake.word())
+      name = fake.word() + str(i)
+      tag = Tag(name=name)
       tag.save()
       list_of_tags.append(tag)
 
@@ -64,9 +63,10 @@ class Command(BaseCommand):
       for i in range(0, random.randint(0, self.MAX_QUESTIONS_PER_USER)):
         title = fake.sentence(nb_words=8)
         text = fake.text()
-        dateTime = fake.date_time_this_year(before_now=True, after_now=False, tzinfo=None)
+        creationTime = fake.date_time_this_year(before_now=True, after_now=False, tzinfo=None)
         author = user
-        question = Question(title=title, text=text, dateTime=dateTime, author=author)
+        rating = random.randint(-50, 50)
+        question = Question(title=title, text=text, creationTime=creationTime, author=author, rating=rating)
         question.save()
         for i in range(0, 3):
           tag = random.choice(tags)
@@ -86,8 +86,9 @@ class Command(BaseCommand):
       for i in range(0, random.randint(0, self.MAX_ANSWERS_PER_QUESTION)):
         user = random.choice(users)
         text = fake.text()
-        dateTime = fake.date_time_this_year(before_now=True, after_now=False, tzinfo=None)
-        answer = Answer(text=text, dateTime=dateTime, author=user, question=question)
+        creationTime = fake.date_time_this_year(before_now=True, after_now=False, tzinfo=None)
+        rating = random.randint(-50, 50)
+        answer = Answer(text=text, creationTime=creationTime, author=user, question=question, rating=rating)
         answer.save()
 
     self.stdout.write(self.style.SUCCESS('Successfully generated answers.'))

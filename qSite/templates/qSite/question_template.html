@@ -5,7 +5,7 @@
     <div class="card">
       <div class="card-header">
         <a href="#"><img src="{% static "img/avatar.jpg" %}" alt="avatar" class="rounded-circle"></a>
-        <a href="#">*Username*</a>
+        <a href="#">{{ question.author.username }}</a>
         <span class="text-muted"> asks about:</span>
         <hr>
         <a href="{% url 'question' question.id %}"><h5 class="card-title">{{ question.title }}</h5></a>
@@ -19,16 +19,21 @@
           {% endif %}
         </p>
       </div>
-      <div class="card-footer text-muted">Posted {{ question.dateTime|timesince }} ago, tags:
+      <div class="card-footer text-muted">Posted {{ question.creationTime|timesince }} ago, tags:
         {% for tag in question.tags.all %}
           <a href="{% url 'tag' tag.name %}">{{ tag.name }}</a>
         {% endfor %}
         <!-- data-toggle="button" aria-pressed="false" autocomplete="off" https://getbootstrap.com/docs/4.0/components/buttons/#toggle-states -->
         <button type="button" data-toggle="button" class="btn btn-outline-danger btn-sm float-right mr-2">
-          <i class="far fa-thumbs-down"></i>{{ question.dislikes }}
+          <i class="far fa-thumbs-down"></i>
         </button>
+        {% if question.rating >= 0 %}
+          <button type="button" class="btn btn-light btn-sm float-right mr-2 text-success">{{ question.rating }}</button>
+        {% else %}
+          <button type="button" class="btn btn-light btn-sm float-right mr-2 text-danger">{{ question.rating }}</button>
+        {% endif %}
         <button type="button" data-toggle="button" class="btn btn-outline-success btn-sm float-right mr-2">
-          <i class="far fa-thumbs-up"></i>{{ question.likes }}
+          <i class="far fa-thumbs-up"></i>
         </button>
         <!-- <a href="#" class="btn btn-sm text-danger float-right mr-2"><i class="far fa-thumbs-down"></i>{{ question.dislikes }}</a> 
         <a href="#" class="btn btn-sm text-success float-right mr-2"><i class="far fa-thumbs-up"></i>{{ question.likes }}</a> -->

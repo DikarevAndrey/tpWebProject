@@ -10,7 +10,7 @@ class UserManager(AbstractUserManager):
     # return get_object_or_404(self, username=_username)
 
   def by_rating(self):
-    return self.order_by('rating')
+    return self.order_by('-rating')
 
 
 class TagManager(models.Manager):
@@ -35,7 +35,8 @@ class QuestionManager(models.Manager):
     return self.order_by('-rating')
 
   def by_id(self, _id):
-    return self.get(pk=_id)
+    # return self.get(pk=_id)
+    return get_object_or_404(self, pk=_id)
 
 
 class AnswerManager(models.Manager):

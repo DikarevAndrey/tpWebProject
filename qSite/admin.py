@@ -3,7 +3,7 @@ from django.contrib.auth.admin import UserAdmin
 from qSite.models import *
 
 
-admin.site.register(Profile, UserAdmin)
+admin.site.register(Profile)
 admin.site.register(Question)
 admin.site.register(Tag)
 admin.site.register(Answer)
