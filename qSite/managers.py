@@ -1,10 +1,13 @@
 from django.db import models
 from django.db.models import Count
+from django.shortcuts import get_object_or_404
+from django.contrib.auth.models import UserManager as AbstractUserManager
 
-class UserManager(models.Manager):
+class UserManager(AbstractUserManager):
 
   def by_username(self, _username):
-    return self.filter(user__username=_username)[0]
+    return self.get(username=_username)
+    # return get_object_or_404(self, username=_username)
 
   def by_rating(self):
     return self.order_by('rating')
@@ -13,7 +16,7 @@ class UserManager(models.Manager):
 class TagManager(models.Manager):
 
   def by_tag_newest(self, _tag):
-    return self.filter(name=_tag)[0].questions.all().order_by('-dateTime')
+    return self.get(name=_tag).questions.all().order_by('-creationTime')
 
   def hottest(self):
     return self.annotate(question_count=Count('questions')).order_by('-question_count')
@@ -26,13 +29,13 @@ class LikeManager(models.Manager):
 class QuestionManager(models.Manager):
 
   def newest(self):
-    return self.order_by('-dateTime')
+    return self.all()
 
   def hottest(self):
     return self.order_by('-rating')
 
   def by_id(self, _id):
-    return self.filter(pk=_id)[0]
+    return self.get(pk=_id)
 
 
 class AnswerManager(models.Manager):

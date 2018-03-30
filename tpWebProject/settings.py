@@ -127,3 +127,5 @@ STATIC_ROOT = os.path.join(BASE_DIR, '/qSite/static/')
 
 MEDIA_ROOT = os.path.join(BASE_DIR, '/qSite/static/uploads/')
 MEDIA_URL = '/uploads/'
+
+AUTH_USER_MODEL = 'qSite.Profile'

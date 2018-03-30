@@ -1,17 +1,19 @@
 from django.db import models
 from django.utils import timezone
-from django.contrib.auth.models import User
 from qSite.managers import *
+from django.contrib.auth.models import AbstractUser
+from django.contrib.contenttypes.fields import GenericRelation
+from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes.models import ContentType
 
-class Profile(models.Model):
-  user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name="Basic user info")
-  avatar = models.ImageField(default="img/nobody.jpg", upload_to='uploads/%Y/%m/%d/', verbose_name="Avatar image of the user")
+class Profile(AbstractUser):
+  avatar = models.ImageField(default="../img/nobody.jpg", upload_to='uploads/%Y/%m/%d/', verbose_name="Avatar image of the user")
   rating = models.IntegerField(default=0, verbose_name="Rating of the user")
 
   objects = UserManager()
 
   def __str__(self):
-    return self.user.username
+    return self.username
 
 
 class Tag(models.Model):
@@ -31,43 +33,61 @@ class Like(models.Model):
   author = models.ForeignKey(Profile, null=False, verbose_name="Author of the vote", on_delete=models.DO_NOTHING)
   value = models.IntegerField(choices=VALUES, verbose_name="Like or dislike", null=False)
 
+  content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, null=True)
+  object_id = models.PositiveIntegerField(null=True)
+  content_object = GenericForeignKey('content_type', 'object_id')
+
   objects = LikeManager()
 
   def __str__(self):
-    return value + ' from ' + author.user.username
+    return value + ' from ' + author.username
 
 
 class Question(models.Model):
+  author = models.ForeignKey(Profile, null=False, verbose_name="Author of the question", on_delete=models.DO_NOTHING)
+
   title = models.CharField(max_length=100, verbose_name="Title of the question")
   text = models.TextField(verbose_name="Full text of the question")
-  dateTime = models.DateTimeField(default=timezone.now, verbose_name="Date and time the question was published")
-  author = models.ForeignKey(Profile, null=False, verbose_name="Author of the question", on_delete=models.DO_NOTHING)
   tags = models.ManyToManyField(Tag, blank=True, verbose_name="Tags of the question", related_name='questions')
-  likes = models.ManyToManyField(Like, blank=True, verbose_name="Likes of the question", related_name='questions')
+  creationTime = models.DateTimeField(default=timezone.now, verbose_name="Date and time the question was published")
+
+  likes = GenericRelation(Like, related_query_name='questions')
   rating = models.IntegerField(default=0, verbose_name="Votes ratio")
 
   objects = QuestionManager()
 
+  def CountRating(self):
+    like_count = self.likes.filter(value='LIKE').count()
+    dislike_count = self.likes.filter(value='DISLIKE').count()
+    self.rating = like_count - dislike_count
+
   def __str__(self):
     return self.text
 
   class Meta:
-    ordering = ['-dateTime']
+    ordering = ['-creationTime']
 
 
 class Answer(models.Model):
-  question = models.ForeignKey(Question, null=False, on_delete=models.CASCADE, verbose_name="Question that is being answered")
-  text = models.TextField(verbose_name="Full text of the answer")
   author = models.ForeignKey(Profile, null=False, verbose_name="Author of the answer", on_delete=models.DO_NOTHING)
-  dateTime = models.DateTimeField(default=timezone.now, verbose_name="Date and time the answer was published")
-  likes = models.ManyToManyField(Like, blank=True, verbose_name="Likes of the question")
+  question = models.ForeignKey(Question, null=False, on_delete=models.CASCADE, verbose_name="Question that is being answered")
+
+  text = models.TextField(verbose_name="Full text of the answer")
+  creationTime = models.DateTimeField(default=timezone.now, verbose_name="Date and time the answer was published")
+  
+  likes = GenericRelation(Like, related_query_name='answers')
   rating = models.IntegerField(default=0, verbose_name="Votes ratio")
-  correct = models.BooleanField(default=False, verbose_name="If answer is marked as correct")
+  is_correct = models.BooleanField(default=False, verbose_name="If answer is marked as correct")
 
   objects = AnswerManager()
+
+  def CountRating(self):
+    like_count = self.likes.filter(value='LIKE').count()
+    dislike_count = self.likes.filter(value='DISLIKE').count()
+    self.rating = like_count - dislike_count
 
   def __str__(self):
     return self.text
 
   class Meta:
-    ordering = ['-dateTime']
+    ordering = ['-creationTime']

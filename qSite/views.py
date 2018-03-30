@@ -1,7 +1,7 @@
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.shortcuts import render
 from random import randint
-from django.core.paginator import Paginator
+from django.core.paginator import Paginator, EmptyPage
 from qSite.models import *
 
 def paginate(request, objects_list, limit):
