@@ -35,7 +35,6 @@ class QuestionManager(models.Manager):
     return self.order_by('-rating')
 
   def by_id(self, _id):
-    # return self.get(pk=_id)
     return get_object_or_404(self, pk=_id)
 
 

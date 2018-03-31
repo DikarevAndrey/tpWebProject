@@ -63,10 +63,20 @@ class Command(BaseCommand):
       for i in range(0, random.randint(0, self.MAX_QUESTIONS_PER_USER)):
         title = fake.sentence(nb_words=8)
         text = fake.text()
-        creationTime = fake.date_time_this_year(before_now=True, after_now=False, tzinfo=None)
+        creationTime = fake.date_time_this_year(
+          before_now=True,
+          after_now=False,
+          tzinfo=None
+        )
         author = user
         rating = random.randint(-50, 50)
-        question = Question(title=title, text=text, creationTime=creationTime, author=author, rating=rating)
+        question = Question(
+          title=title,
+          text=text,
+          creationTime=creationTime,
+          author=author,
+          rating=rating
+        )
         question.save()
         for i in range(0, 3):
           tag = random.choice(tags)
@@ -86,9 +96,19 @@ class Command(BaseCommand):
       for i in range(0, random.randint(0, self.MAX_ANSWERS_PER_QUESTION)):
         user = random.choice(users)
         text = fake.text()
-        creationTime = fake.date_time_this_year(before_now=True, after_now=False, tzinfo=None)
+        creationTime = fake.date_time_this_year(
+          before_now=True,
+          after_now=False,
+          tzinfo=None
+        )
         rating = random.randint(-50, 50)
-        answer = Answer(text=text, creationTime=creationTime, author=user, question=question, rating=rating)
+        answer = Answer(
+          text=text,
+          creationTime=creationTime,
+          author=user,
+          question=question,
+          rating=rating
+        )
         answer.save()
 
     self.stdout.write(self.style.SUCCESS('Successfully generated answers.'))

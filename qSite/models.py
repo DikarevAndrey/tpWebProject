@@ -9,7 +9,11 @@ from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
 
 class Profile(AbstractUser):
-  avatar = models.ImageField(default="../img/nobody.jpg", upload_to='uploads/%Y/%m/%d/', verbose_name="Avatar image of the user")
+  avatar = models.ImageField(
+    default="../img/nobody.jpg",
+    upload_to='uploads/%Y/%m/%d/',
+    verbose_name="Avatar image of the user"
+  )
   rating = models.IntegerField(default=0, verbose_name="Rating of the user")
 
   objects = UserManager()
@@ -34,11 +38,27 @@ class Like(models.Model):
   LIKE = 1
   DISLIKE = -1
   VALUES = ((DISLIKE, 'DISLIKE'), (LIKE, 'LIKE'),)
-  author = models.ForeignKey(Profile, null=False, verbose_name="Author of the vote", on_delete=models.DO_NOTHING)
-  value = models.IntegerField(choices=VALUES, verbose_name="Like or dislike", null=False)
+  author = models.ForeignKey(
+    Profile,
+    null=False,
+    verbose_name="Author of the vote",
+    on_delete=models.DO_NOTHING
+  )
+  value = models.IntegerField(
+    choices=VALUES,
+    verbose_name="Like or dislike",
+    null=False
+  )
 
-  content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, null=True)
-  object_id = models.PositiveIntegerField(null=True, verbose_name="id of related object")
+  content_type = models.ForeignKey(
+    ContentType,
+    on_delete=models.CASCADE,
+    null=True
+  )
+  object_id = models.PositiveIntegerField(
+    null=True,
+    verbose_name="id of related object"
+  )
   content_object = GenericForeignKey('content_type', 'object_id')
 
   objects = LikeManager()
@@ -51,12 +71,28 @@ class Like(models.Model):
 
 
 class Question(models.Model):
-  author = models.ForeignKey(Profile, null=False, verbose_name="Author of the question", on_delete=models.DO_NOTHING)
+  author = models.ForeignKey(
+    Profile,
+    null=False,
+    verbose_name="Author of the question",
+    on_delete=models.DO_NOTHING
+  )
 
-  title = models.CharField(max_length=100, verbose_name="Title of the question")
+  title = models.CharField(
+    max_length=100,
+    verbose_name="Title of the question"
+  )
   text = models.TextField(verbose_name="Full text of the question")
-  tags = models.ManyToManyField(Tag, blank=True, verbose_name="Tags of the question", related_name='questions')
-  creationTime = models.DateTimeField(default=timezone.now, verbose_name="Date and time the question was published")
+  tags = models.ManyToManyField(
+    Tag,
+    blank=True,
+    verbose_name="Tags of the question",
+    related_name='questions'
+  )
+  creationTime = models.DateTimeField(
+    default=timezone.now,
+    verbose_name="Date and time the question was published"
+  )
 
   likes = GenericRelation(Like, related_query_name='questions')
   rating = models.IntegerField(default=0, verbose_name="Votes ratio")
@@ -77,15 +113,31 @@ class Question(models.Model):
 
 
 class Answer(models.Model):
-  author = models.ForeignKey(Profile, null=False, verbose_name="Author of the answer", on_delete=models.DO_NOTHING)
-  question = models.ForeignKey(Question, null=False, on_delete=models.CASCADE, verbose_name="Question that is being answered")
+  author = models.ForeignKey(
+    Profile,
+    null=False,
+    verbose_name="Author of the answer",
+    on_delete=models.DO_NOTHING
+  )
+  question = models.ForeignKey(
+    Question,
+    null=False,
+    on_delete=models.CASCADE,
+    verbose_name="Question that is being answered"
+  )
 
   text = models.TextField(verbose_name="Full text of the answer")
-  creationTime = models.DateTimeField(default=timezone.now, verbose_name="Date and time the answer was published")
+  creationTime = models.DateTimeField(
+    default=timezone.now,
+    verbose_name="Date and time the answer was published"
+  )
 
   likes = GenericRelation(Like, related_query_name='answers')
   rating = models.IntegerField(default=0, verbose_name="Votes ratio")
-  is_correct = models.BooleanField(default=False, verbose_name="If answer is marked as correct")
+  is_correct = models.BooleanField(
+    default=False,
+    verbose_name="If answer is marked as correct"
+  )
 
   objects = AnswerManager()
 
