@@ -10,11 +10,26 @@
 <h1>Question</h1>
 <hr>
 {% include "qSite/question_template.html" %}
+<h1 class="mt-2">{{ answers_count }} Answers</h1>
 <hr>
 <!-- response -->
 {% for answer in answers %}
   {% include "qSite/answer_template.html" %}
 {% endfor %}
+
+<!-- Users' response -->
+<!-- if user.is_authenticated and not(user == question.author) -->
+{% if user.is_authenticated %}
+  <h1 id="answer_field" class="mt-2">Your answer</h1>
+  <hr>
+  <form class="needs-validation" novalidate>
+    <div class="form-group">
+      <textarea class="form-control" id="user_answer_text" rows="5" required></textarea>
+      <div class="invalid-feedback">Write something!</div>
+    </div>
+    <button type="submit" class="btn btn-primary">Post your answer</button>
+  </form>
+{% endif %}
 
 {% endblock content %}
 {% block pagination %}

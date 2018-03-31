@@ -7,6 +7,9 @@
         <a href="#"><img src="{% static "img/avatar.jpg" %}" alt="avatar" class="rounded-circle"></a>
         <a href="#">{{ question.author.username }}</a>
         <span class="text-muted"> asks about:</span>
+        {% if answers and user.is_authenticated %}
+          <button type="button" class="float-right btn btn-link"><a href="#answer_field">Answer this question</a></button>
+        {% endif %}
         <hr>
         <a href="{% url 'question' question.id %}"><h5 class="card-title">{{ question.title }}</h5></a>
       </div>

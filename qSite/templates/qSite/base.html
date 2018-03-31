@@ -34,11 +34,11 @@
         </ul>
         <ul class="navbar-nav ml-5 w-100 justify-content-center">
           <form class="form-inline mt-2 mt-md-0">
-            <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
-            <button class="btn btn-success navbar-btn" type="submit">Search</button>
+            <input class="form-control mr-sm-2" type="text" placeholder="Search..." aria-label="Search">
+            <button class="btn btn-success navbar-btn" type="submit"><i class="fas fa-search"></i></button>
           </form>
         </ul>
-        {% if not user.is_authenticated %}
+        {% if user.is_authenticated %}
         <ul class="navbar-nav ml-auto w-100 justify-content-end ">
           <li class="nav-item">
             <a href="#"><img src="{% static "img/avatar.jpg" %}" alt="avatar" class="rounded-circle"></a>

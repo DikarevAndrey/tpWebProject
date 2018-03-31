@@ -16,7 +16,7 @@ class UserManager(AbstractUserManager):
 class TagManager(models.Manager):
 
   def by_tag_newest(self, _tag):
-    return self.get(name=_tag).questions.all().order_by('-creationTime')
+    return get_object_or_404(self, name=_tag).questions.all().order_by('-creationTime')
 
   def hottest(self):
     return self.annotate(question_count=Count('questions')).order_by('-question_count')
