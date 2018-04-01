@@ -5,7 +5,7 @@ from django.contrib.auth.models import AbstractUser
 from django.contrib.contenttypes.fields import GenericRelation
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
-from django.db.models.signals import post_save, post_delete
+from django.db.models.signals import post_save, post_delete, pre_save
 from django.dispatch import receiver
 
 class Profile(AbstractUser):
@@ -100,10 +100,11 @@ class Question(models.Model):
   objects = QuestionManager()
 
   def update_rating(self):
+    print('Update_rating fired!')
     like_count = self.likes.filter(value=1).count()
     dislike_count = self.likes.filter(value=-1).count()
     self.rating = like_count - dislike_count
-    self.save()
+    self.save(update_fields=['rating'])
 
   def __str__(self):
     return self.text
@@ -142,10 +143,11 @@ class Answer(models.Model):
   objects = AnswerManager()
 
   def update_rating(self):
+    print('Update_rating fired!')
     like_count = self.likes.filter(value=1).count()
     dislike_count = self.likes.filter(value=-1).count()
     self.rating = like_count - dislike_count
-    self.save()
+    self.save(update_fields=['rating'])
 
   def __str__(self):
     return self.text
@@ -155,9 +157,11 @@ class Answer(models.Model):
 
 
 @receiver(post_save, sender=Like)
-def update_related_rating(sender, instance, **kwargs):
+def update_related_rating_after_save(sender, instance, **kwargs):
+  print("Received post_save signal!")
   instance.content_object.update_rating()
 
 @receiver(post_delete, sender=Like)
-def update_related_rating(sender, instance, **kwargs):
+def update_related_rating_after_delete(sender, instance, **kwargs):
+  print("Received post_delete signal!")
   instance.content_object.update_rating()
