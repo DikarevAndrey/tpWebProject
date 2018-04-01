@@ -42,7 +42,7 @@ class Like(models.Model):
     Profile,
     null=False,
     verbose_name="Author of the vote",
-    on_delete=models.DO_NOTHING
+    on_delete=models.CASCADE
   )
   value = models.IntegerField(
     choices=VALUES,
@@ -75,7 +75,7 @@ class Question(models.Model):
     Profile,
     null=False,
     verbose_name="Author of the question",
-    on_delete=models.DO_NOTHING
+    on_delete=models.CASCADE
   )
 
   title = models.CharField(
@@ -117,7 +117,7 @@ class Answer(models.Model):
     Profile,
     null=False,
     verbose_name="Author of the answer",
-    on_delete=models.DO_NOTHING
+    on_delete=models.CASCADE
   )
   question = models.ForeignKey(
     Question,

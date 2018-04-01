@@ -10,7 +10,7 @@
 <h1>Question</h1>
 <hr>
 {% include "qSite/question_template.html" %}
-<h1 class="mt-2">{{ answers_count }} Answers</h1>
+<h1 class="mt-2">{{ page.paginator.count }} Answers</h1>
 <hr>
 <!-- response -->
 {% for answer in answers %}
