@@ -51,6 +51,7 @@ def question(request, questionId):
   question = Question.objects.by_id(questionId)
   answers = Answer.objects.hottest(questionId)
   page = paginate(request, answers, 30)
+  print(question.rating)
   context = {'question': question, 'answers': page.object_list, 'page': page}
   context = add_tags_users_to_context(context)
   return render(request, 'qSite/question.html', context)

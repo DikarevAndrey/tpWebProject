@@ -72,13 +72,11 @@ class Command(BaseCommand):
           tzinfo=timezone('Europe/Moscow')
         )
         author = user
-        rating = random.randint(-50, 50)
         question = Question(
           title=title,
           text=text,
           creationTime=creationTime,
-          author=author,
-          rating=rating
+          author=author
         )
         question.save()
         tags_to_add = []
@@ -104,13 +102,11 @@ class Command(BaseCommand):
           after_now=False,
           tzinfo=timezone('Europe/Moscow')
         )
-        rating = random.randint(-50, 50)
         answer = Answer(
           text=text,
           creationTime=creationTime,
           author=user,
-          question=question,
-          rating=rating
+          question=question
         )
         list_of_answers.append(answer)
 

@@ -80,9 +80,7 @@ class Command(BaseCommand):
           list_of_likes.append(like)
 
         Like.objects.bulk_create(list_of_likes)
-
-    for question in questions:
-      question.update_rating()
-    for answer in answers:
-      answer.update_rating()
+        for like in list_of_likes:
+          like.content_object.rating += like.value
+          like.content_object.save(update_fields=['rating'])
     self.stdout.write(self.style.SUCCESS('Successfully generated likes.'))
