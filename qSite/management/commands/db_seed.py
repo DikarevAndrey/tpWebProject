@@ -30,7 +30,8 @@ class Command(BaseCommand):
     fake = Faker()
     for i in range(0, self.USERS_COUNT):
       username = fake.simple_profile().get("username") + str(i)
-      user = Profile(username=username, password=username)
+      user = Profile(username=username)
+      user.set_password(username)
       user.first_name = fake.first_name()
       user.last_name = fake.last_name()
       user.rating = random.randint(-50, 50)

@@ -2,6 +2,7 @@ from django.db import models
 from django.db.models import Count
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.models import UserManager as AbstractUserManager
+# from django.db.models import Q
 
 class UserManager(AbstractUserManager):
 
@@ -12,6 +13,9 @@ class UserManager(AbstractUserManager):
   def by_rating(self):
     return self.order_by('-rating')
 
+  def search(self, _q):
+    return self.filter(username__icontains=_q).order_by('-rating')
+
 
 class TagManager(models.Manager):
 
@@ -21,6 +25,8 @@ class TagManager(models.Manager):
   def hottest(self):
     return self.annotate(question_count=Count('questions')).order_by('-question_count')
 
+  def search(self, _q):
+    return self.hottest().filter(name__icontains=_q)
 
 class LikeManager(models.Manager):
   pass
@@ -37,6 +43,9 @@ class QuestionManager(models.Manager):
   def by_id(self, _id):
     return get_object_or_404(self, pk=_id)
 
+  def search(self, _q):
+    return self.filter(tags__name__icontains=_q).order_by('-rating')
+    # return self.filter(Q(title__icontains=q) | Q(text__icontains=q))
 
 class AnswerManager(models.Manager):
   

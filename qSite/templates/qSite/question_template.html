@@ -4,7 +4,7 @@
   <div class="col-md-12">
     <div class="card">
       <div class="card-header">
-        <a href="#"><img src="{% static "img/avatar.jpg" %}" alt="avatar" class="rounded-circle"></a>
+        <a href="#"><img src="{% static user.avatar.url %}" alt="avatar" height="42" width="42" class="rounded-circle"></a>
         <a href="#">{{ question.author.username }}</a>
         <span class="text-muted"> asks about:</span>
         {% if answers and user.is_authenticated %}

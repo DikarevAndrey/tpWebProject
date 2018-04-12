@@ -23,3 +23,11 @@ body > .container {
 .list-group + .list-group {
   margin-top: 2rem 
 }
+
+.invalid-feedback {
+  display: block;
+  width: 100%;
+  margin-top: .25rem;
+  font-size: 80%;
+  color: #dc3545
+}

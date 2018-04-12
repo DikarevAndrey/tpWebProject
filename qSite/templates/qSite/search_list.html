@@ -1,0 +1,48 @@
+{% extends "qSite/base.html" %}
+{% load static %}
+
+{% block title %}
+  {{ q }}
+{% endblock title %}
+
+{% block content %}
+<h1>Search results</h1>
+<hr>
+<div class="container mb-4 mt-4">
+<ul class="nav nav-pills nav-justified" id="searchTab" role="tablist">
+  <li class="nav-item border rounded">
+    <a class="nav-link active" id="tags-tab" data-toggle="tab" href="#tags" role="tab" aria-controls="tags" aria-selected="true">Tags</a>
+  </li>
+  <li class="nav-item border rounded">
+    <a class="nav-link" id="questions-tab" data-toggle="tab" href="#questions" role="tab" aria-controls="questions" aria-selected="false">Questions</a>
+  </li>
+  <li class="nav-item border rounded">
+    <a class="nav-link" id="users-tab" data-toggle="tab" href="#users" role="tab" aria-controls="users" aria-selected="false">Users</a>
+  </li>
+</ul>
+</div>
+<div class="tab-content" id="searchTabContent">
+  <div class="tab-pane fade show active" id="tags" role="tabpanel" aria-labelledby="tags-tab">
+    {% for tag in tags %}
+      <a href="{% url 'tag' tag.name %}">{{ tag.name }}</a> - {{ tag.question_count }} questions<hr>
+    {% endfor %}
+  </div>
+  <div class="tab-pane fade" id="users" role="tabpanel" aria-labelledby="users-tab">
+    {% for user in users %}
+      <a href="#"><img src="{% static user.avatar.url %}" alt="avatar" height="42" width="42" class="rounded-circle"></a>
+      <a href="#">{{ user.username }}</a>
+      {% if user.rating >= 0 %}
+        <span class="text-success">{{ user.rating }}</span>
+      {% else %}
+        <span class="text-danger">{{ user.rating }}</span>
+      {% endif %}
+      <hr>
+    {% endfor %}
+  </div>
+  <div class="tab-pane fade" id="questions" role="tabpanel" aria-labelledby="questions-tab">
+    {% for question in questions %}
+      {% include "qSite/question_template.html" %}
+    {% endfor %}
+  </div>
+</div>
+{% endblock content %}
