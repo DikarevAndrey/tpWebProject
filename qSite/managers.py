@@ -10,6 +10,9 @@ class UserManager(AbstractUserManager):
     return self.get(username=_username)
     # return get_object_or_404(self, username=_username)
 
+  def by_id(self, _id):
+    return get_object_or_404(self, pk=_id)
+
   def by_rating(self):
     return self.order_by('-rating')
 
@@ -50,4 +53,4 @@ class QuestionManager(models.Manager):
 class AnswerManager(models.Manager):
   
   def hottest(self, qid):
-    return self.filter(question__id=qid).order_by('-rating')
+    return self.filter(question__id=qid).order_by('-rating', '-creationTime')

@@ -64,6 +64,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                "qSite.context_processors.add_tags_users_to_context", 
             ],
         },
     },
@@ -131,3 +132,4 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'qSite/static/uploads/')
 MEDIA_URL = '/uploads/'
 
 AUTH_USER_MODEL = 'qSite.Profile'
+LOGIN_REDIRECT_URL = 'index'

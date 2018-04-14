@@ -10,17 +10,25 @@ from django.dispatch import receiver
 
 class Profile(AbstractUser):
   avatar = models.ImageField(
+    blank=False,
     default="../img/nobody.jpg",
-    upload_to='uploads/%Y/%m/%d/',
+    upload_to='%Y/%m/%d/',
     verbose_name="Avatar image of the user"
   )
   rating = models.IntegerField(default=0, verbose_name="Rating of the user")
-
   objects = UserManager()
+  # AbstractUser._meta.get_field('email')._unique = True
+  def get_questions(self):
+    return self.questions.order_by('-creationTime')
+
+  def get_answers(self):
+    return self.answers.order_by('-creationTime')
 
   def __str__(self):
     return self.username
 
+  class Meta:
+    ordering = ['-rating']
 
 class Tag(models.Model):
   name = models.CharField(max_length=15, verbose_name="Name of the tag")
@@ -75,7 +83,8 @@ class Question(models.Model):
     Profile,
     null=False,
     verbose_name="Author of the question",
-    on_delete=models.CASCADE
+    on_delete=models.CASCADE,
+    related_name='questions'
   )
 
   title = models.CharField(
@@ -118,7 +127,8 @@ class Answer(models.Model):
     Profile,
     null=False,
     verbose_name="Author of the answer",
-    on_delete=models.CASCADE
+    on_delete=models.CASCADE,
+    related_name='answers'
   )
   question = models.ForeignKey(
     Question,
@@ -142,6 +152,9 @@ class Answer(models.Model):
 
   objects = AnswerManager()
 
+  def get_page(self):
+    return int(Answer.objects.hottest(self.question.id).filter(rating__gte=self.rating).filter(creationTime__lte=self.creationTime).count() / 30) + 1
+
   def update_rating(self):
     # print('Update_rating fired!')
     like_count = self.likes.filter(value=1).count()
@@ -154,7 +167,7 @@ class Answer(models.Model):
 
   class Meta:
     ordering = ['-creationTime']
-
+    # unique_together = ('author', 'question')
 
 # @receiver(post_save, sender=Like)
 # def update_related_rating_after_save(sender, instance, **kwargs):

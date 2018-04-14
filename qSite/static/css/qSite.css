@@ -31,3 +31,9 @@ body > .container {
   font-size: 80%;
   color: #dc3545
 }
+
+.vl {
+  width: 50%;
+  border-right: 3px solid #00000020;
+  height: 3rem;
+}

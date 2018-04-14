@@ -23,23 +23,32 @@
 </div>
 <div class="tab-content" id="searchTabContent">
   <div class="tab-pane fade show active" id="tags" role="tabpanel" aria-labelledby="tags-tab">
+    {% if not tags %}
+      <h3>No tags found.</h3>
+    {% endif %}
     {% for tag in tags %}
       <a href="{% url 'tag' tag.name %}">{{ tag.name }}</a> - {{ tag.question_count }} questions<hr>
     {% endfor %}
   </div>
   <div class="tab-pane fade" id="users" role="tabpanel" aria-labelledby="users-tab">
-    {% for user in users %}
-      <a href="#"><img src="{% static user.avatar.url %}" alt="avatar" height="42" width="42" class="rounded-circle"></a>
-      <a href="#">{{ user.username }}</a>
-      {% if user.rating >= 0 %}
-        <span class="text-success">{{ user.rating }}</span>
+    {% if not users %}
+      <h3>No users found.</h3>
+    {% endif %}
+    {% for profile in users %}
+      <a href="{% url 'profile' profile.id %}"><img src="{% static profile.avatar.url %}" alt="avatar" height="42" width="42" class="rounded-circle"></a>
+      <a href="{% url 'profile' profile.id %}">{{ profile.username }}</a>
+      {% if profile.rating >= 0 %}
+        <span class="text-success">{{ profile.rating }}</span>
       {% else %}
-        <span class="text-danger">{{ user.rating }}</span>
+        <span class="text-danger">{{ profile.rating }}</span>
       {% endif %}
       <hr>
     {% endfor %}
   </div>
   <div class="tab-pane fade" id="questions" role="tabpanel" aria-labelledby="questions-tab">
+    {% if not questions %}
+      <h3>No questions found.</h3>
+    {% endif %}
     {% for question in questions %}
       {% include "qSite/question_template.html" %}
     {% endfor %}
