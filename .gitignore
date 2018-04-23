@@ -3,3 +3,4 @@ venv/
 TODO
 my.cnf
 .idea/
+*.pyc
