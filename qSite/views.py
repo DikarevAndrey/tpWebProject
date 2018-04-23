@@ -72,8 +72,7 @@ def question(request, questionId):
       page_number = answer.get_page()
       return redirect('/qsite/question/' + str(questionId) + '?page=' + str(page_number) + '#answer' + str(answer.id))
   if request.method == "GET" and request.user.is_authenticated:
-    #  метод модели - отвечал ли уже is_answered
-    if Answer.objects.filter(question__id=questionId, author=request.user).first() is not None:
+    if question.is_answered_by(request.user):
       form = None
   context = {'question': question, 'answers': page.object_list, 'page': page, 'form': form}
   return render(request, 'qSite/question.html', context)

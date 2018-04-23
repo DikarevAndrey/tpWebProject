@@ -12,7 +12,7 @@ class Profile(AbstractUser):
   avatar = models.ImageField(
     blank=False,
     default="../img/nobody.jpg",
-    upload_to='%Y/%m/%d/',
+    upload_to='uploads/%Y/%m/%d/',
     verbose_name="Avatar image of the user"
   )
   rating = models.IntegerField(default=0, verbose_name="Rating of the user")
@@ -107,6 +107,9 @@ class Question(models.Model):
   rating = models.IntegerField(default=0, verbose_name="Votes ratio")
 
   objects = QuestionManager()
+
+  def is_answered_by(self, user):
+    return self.answer_set.filter(author=user).exists()
 
   def update_rating(self):
     # print('Update_rating fired!')
