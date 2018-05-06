@@ -14,4 +14,6 @@ urlpatterns = [
     path('signout', views.signout, name='signout'),
     path('tag/<str:tagName>', views.tag, name='tag'),
     path('hot', views.index, name='hot'),
+    path('like', views.like, name='like'),
+    path('correct', views.correct, name='correct'),
 ]

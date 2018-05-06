@@ -172,12 +172,12 @@ class Answer(models.Model):
     ordering = ['-creationTime']
     # unique_together = ('author', 'question')
 
-# @receiver(post_save, sender=Like)
-# def update_related_rating_after_save(sender, instance, **kwargs):
-#   # print("Received post_save signal!")
-#   instance.content_object.update_rating()
+@receiver(post_save, sender=Like)
+def update_related_rating_after_save(sender, instance, **kwargs):
+  # print("Received post_save signal!")
+  instance.content_object.update_rating()
 
-# @receiver(post_delete, sender=Like)
-# def update_related_rating_after_delete(sender, instance, **kwargs):
-#   # print("Received post_delete signal!")
-#   instance.content_object.update_rating()
+@receiver(post_delete, sender=Like)
+def update_related_rating_after_delete(sender, instance, **kwargs):
+  # print("Received post_delete signal!")
+  instance.content_object.update_rating()

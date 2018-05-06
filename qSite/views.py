@@ -1,4 +1,4 @@
-from django.http import HttpResponse, HttpResponseBadRequest
+from django.http import HttpResponse, HttpResponseBadRequest, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from random import randint
 from django.core.paginator import Paginator, EmptyPage
@@ -7,6 +7,8 @@ from qSite.forms import *
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import views as auth_views
+from django.views.decorators.http import require_POST
+
 
 def paginate(request, objects_list, limit):
   page = request.GET.get('page') or 1
@@ -133,3 +135,59 @@ def editProfile(request):
     form = EditProfileForm(instance=request.user)
   context = {'form': form}
   return render(request, 'qSite/editProfile.html', context)
+
+
+@require_POST
+def like(request):
+  content_type = request.POST.get('content_type')
+  if content_type is None:
+    return JsonResponse({'status': 'error'})
+
+  try:
+    value = int(request.POST.get('value'))
+  except ValueError:
+    return JsonResponse({'status': 'error'})
+
+  try:
+    object_id = int(request.POST.get('object_id'))
+  except ValueError:
+    return JsonResponse({'status': 'error'})
+
+  if content_type == 'Question':
+    try:
+      content_object = Question.objects.get(pk=object_id)
+    except Question.DoesNotExist:
+      return JsonResponse({'status': 'error'})
+  else:
+    try:
+      content_object = Answer.objects.get(pk=object_id)
+    except Answer.DoesNotExist:
+      return JsonResponse({'status': 'error'})
+
+  author = request.user
+  kwargs = {'author': author, 'content_type__model': content_type, 'object_id': object_id}
+  newLike = Like.objects.filter(**kwargs)
+  if newLike.exists():
+    return JsonResponse({'status': 'error'})
+  else:
+    Like.objects.create(value=value, author=author, content_object=content_object)
+
+  if content_type == 'Question':
+    likes_count = Question.objects.get(pk=object_id).rating
+  else:
+    likes_count = Answer.objects.get(pk=object_id).rating
+
+  return JsonResponse({'status': 'ok', 'likes_count': likes_count})
+
+@require_POST
+def correct(request):
+  try:
+    answer_id = int(request.POST.get('answer_id'))
+  except ValueError:
+    return JsonResponse({'status': 'error'})
+
+  answer = Answer.objects.get(pk=answer_id)
+  state = answer.is_correct
+  answer.is_correct = not state
+  answer.save()
+  return JsonResponse({'status': 'ok', 'is_correct': answer.is_correct})
