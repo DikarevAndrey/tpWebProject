@@ -4,7 +4,7 @@
   <div class="col-md-12">
     <div class="card">
       <div class="card-header">
-        <a href="{% url 'profile' question.author.id %}"><img src="{% static question.author.avatar.url %}" alt="avatar" height="42" width="42" class="rounded-circle"></a>
+        <a href="{% url 'profile' question.author.id %}"><img src="{{ question.author.avatar.url }}" alt="avatar" height="42" width="42" class="rounded-circle"></a>
         <a href="{% url 'profile' question.author.id %}">{{ question.author.username }}</a>
         <span class="text-muted"> asks about:</span>
         {% if answers and user.is_authenticated and question.author != user and form is not None %}

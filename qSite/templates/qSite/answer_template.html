@@ -4,7 +4,7 @@
   <div class="col-md-12">
     <div class="card">
       <div class="card-header">
-        <a href="{% url 'profile' answer.author.id %}"><img src="{% static answer.author.avatar.url %}" alt="avatar" height="42" width="42" class="rounded-circle"></a>
+        <a href="{% url 'profile' answer.author.id %}"><img src="{{ answer.author.avatar.url }}" alt="avatar" height="42" width="42" class="rounded-circle"></a>
         <a href="{% url 'profile' answer.author.id %}">{{ answer.author.username }}</a>
         <span class="text-muted"> answers:</span>
         {% if answer.is_correct == True %}

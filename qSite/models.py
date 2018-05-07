@@ -11,7 +11,7 @@ from django.dispatch import receiver
 class Profile(AbstractUser):
   avatar = models.ImageField(
     blank=False,
-    default="../img/nobody.jpg",
+    default="nobody.jpg",
     upload_to='uploads/%Y/%m/%d/',
     verbose_name="Avatar image of the user"
   )

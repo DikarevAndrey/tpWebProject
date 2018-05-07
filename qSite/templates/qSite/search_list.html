@@ -35,7 +35,7 @@
       <h3>No users found.</h3>
     {% endif %}
     {% for profile in users %}
-      <a href="{% url 'profile' profile.id %}"><img src="{% static profile.avatar.url %}" alt="avatar" height="42" width="42" class="rounded-circle"></a>
+      <a href="{% url 'profile' profile.id %}"><img src="{{ profile.avatar.url }}" alt="avatar" height="42" width="42" class="rounded-circle"></a>
       <a href="{% url 'profile' profile.id %}">{{ profile.username }}</a>
       {% if profile.rating >= 0 %}
         <span class="text-success">{{ profile.rating }}</span>

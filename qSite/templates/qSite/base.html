@@ -41,7 +41,7 @@
         {% if user.is_authenticated %}
         <ul class="navbar-nav ml-auto w-100 justify-content-end ">
           <li class="nav-item">
-            <a href="{% url 'profile' user.id %}"><img src="{% static user.avatar.url %}" alt="avatar" height="42" width="42" class="rounded-circle"></a>
+            <a href="{% url 'profile' user.id %}"><img src="{{ user.avatar.url }}" alt="avatar" height="42" width="42" class="rounded-circle"></a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="{% url 'profile' user.id %}">{{ user.username }}</a>

@@ -124,12 +124,12 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 # STATICFILES_DIRS = [
-#     '/Users/andrey/TechnoPark/WEB/tpWebProject/qSite/static/',
+#     os.path.join(BASE_DIR, 'qSite/static'),
 # ]
-STATIC_ROOT = os.path.join(BASE_DIR, '/qSite/static/')
+# STATIC_ROOT = os.path.join(BASE_DIR, '/qSite/static/')
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'qSite/static/uploads/')
-MEDIA_URL = '/uploads/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'qSite/media')
+MEDIA_URL = '/media/'
 
 AUTH_USER_MODEL = 'qSite.Profile'
 LOGIN_REDIRECT_URL = 'index'
