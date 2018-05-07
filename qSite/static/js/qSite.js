@@ -68,6 +68,13 @@ $('.js-like').on('click', function() {
       $btn.attr("aria-pressed", "true")
       $btn.attr("autocomplete", "off")
       $('#' + content_type + '_likes_count-' + object_id).text(data.likes_count)
+      if (parseInt($('#' + content_type + '_likes_count-' + object_id).text()) < 0) {
+        $('#' + content_type + '_likes_count-' + object_id).removeClass('text-success')
+        $('#' + content_type + '_likes_count-' + object_id).addClass('text-danger')
+      } else {
+        $('#' + content_type + '_likes_count-' + object_id).removeClass('text-danger')
+        $('#' + content_type + '_likes_count-' + object_id).addClass('text-success')
+      }
     }
   })
   return false;
