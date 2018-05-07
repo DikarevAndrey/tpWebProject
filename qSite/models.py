@@ -6,7 +6,9 @@ from django.contrib.contenttypes.fields import GenericRelation
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.db.models.signals import post_save, post_delete, pre_save
+from django.db.models import Sum
 from django.dispatch import receiver
+
 
 class Profile(AbstractUser):
   avatar = models.ImageField(
@@ -113,10 +115,18 @@ class Question(models.Model):
 
   def update_rating(self):
     # print('Update_rating fired!')
-    like_count = self.likes.filter(value=1).count()
-    dislike_count = self.likes.filter(value=-1).count()
-    self.rating = like_count - dislike_count
+    # like_count = self.likes.filter(value=1).count()
+    # dislike_count = self.likes.filter(value=-1).count()
+    # self.rating = like_count - dislike_count
+    self.rating = self.likes.aggregate(Sum('value')).get('value__sum')
     self.save(update_fields=['rating'])
+
+  def is_liked_by(self, user):
+    like_ = self.likes.filter(author=user)
+    if not like_.exists():
+      return 0
+    else:
+      return like_.first().value
 
   def __str__(self):
     return self.text
@@ -160,10 +170,18 @@ class Answer(models.Model):
 
   def update_rating(self):
     # print('Update_rating fired!')
-    like_count = self.likes.filter(value=1).count()
-    dislike_count = self.likes.filter(value=-1).count()
-    self.rating = like_count - dislike_count
+    # like_count = self.likes.filter(value=1).count()
+    # dislike_count = self.likes.filter(value=-1).count()
+    # self.rating = like_count - dislike_count
+    self.rating = self.likes.aggregate(Sum('value')).get('value__sum')
     self.save(update_fields=['rating'])
+
+  def is_liked_by(self, user):
+    like_ = self.likes.filter(author=user)
+    if not like_.exists():
+      return 0
+    else:
+      return like_.first().value
 
   def __str__(self):
     return self.text

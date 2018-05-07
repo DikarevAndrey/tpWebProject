@@ -58,8 +58,15 @@ $('.js-like').on('click', function() {
   .done(function(data) {
     console.log(data);
     if (data.status == 'error') {
+      console.log("error statement");
       $('#' + content_type + '_likes_count-' + object_id).text(cur_likes_count)
-    } else {
+    }
+    if (data.status == 'ok') {
+      console.log("ok statement");
+      $btn.addClass('active')
+      $btn.attr("data-toggle", "button")
+      $btn.attr("aria-pressed", "true")
+      $btn.attr("autocomplete", "off")
       $('#' + content_type + '_likes_count-' + object_id).text(data.likes_count)
     }
   })

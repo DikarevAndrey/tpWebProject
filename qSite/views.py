@@ -124,6 +124,7 @@ def profile(request, userId):
   context = {'profile': profile, 'questions': questions, 'answers': answers}
   return render(request, 'qSite/profile.html', context)
 
+
 @login_required(login_url='/qsite/signin')
 def editProfile(request):
   if request.method == "POST":
