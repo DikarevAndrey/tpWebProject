@@ -1,6 +1,8 @@
 {% extends "qSite/base.html" %}
 {% load static %}
 
+{% load is_liked_by_current_user %}
+
 {% block title %}
   {{ profile.username }}
 {% endblock title %}
@@ -13,18 +15,59 @@
   {% if user == profile %}
     [<a href="{% url 'editProfile' %}">Edit profile</a>]
   {% endif %}
-  {% if user.is_authenticated and user != profile %}  
-    <button type="button" data-toggle="button" class="btn btn-outline-danger btn-lg float-right mr-2">
-      <i class="far fa-thumbs-down"></i>
-    </button>
-    {% if profile.rating >= 0 %}
-      <button type="button" class="btn btn-light btn-lg float-right mr-2 text-success">{{ profile.rating }}</button>
+  {% if user.is_authenticated and user != profile %}
+    {% is_liked_by_current_user profile as like %}
+
+    {% if like == 0 %}
+      <button type="button" data-toggle="button" class="btn btn-outline-danger btn-lg float-right mr-2 js-like" data-id="{{ profile.id }}" data-content_type="Profile" data-value="-1">
+        <i class="far fa-thumbs-down"></i>
+      </button>
+
+      {% if profile.rating >= 0 %}
+        <button type="button" class="btn btn-light btn-lg float-right mr-2 text-success" id="Profile_likes_count-{{ profile.id }}">{{ profile.rating }}</button>
+      {% else %}
+        <button type="button" class="btn btn-light btn-lg float-right mr-2 text-danger" id="Profile_likes_count-{{ profile.id }}">{{ profile.rating }}</button>
+      {% endif %}
+
+      <button type="button" data-toggle="button" class="btn btn-outline-success btn-lg float-right mr-2 js-like" data-id="{{ profile.id }}" data-content_type="Profile" data-value="1">
+        <i class="far fa-thumbs-up"></i>
+      </button>
+    {% elif like == 1 %}
+      <button type="button" data-toggle="button" class="btn btn-outline-danger btn-lg float-right mr-2 js-like" data-id="{{ profile.id }}" data-content_type="Profile" data-value="-1">
+        <i class="far fa-thumbs-down"></i>
+      </button>
+
+      {% if profile.rating >= 0 %}
+        <button type="button" class="btn btn-light btn-lg float-right mr-2 text-success" id="Profile_likes_count-{{ profile.id }}">{{ profile.rating }}</button>
+      {% else %}
+        <button type="button" class="btn btn-light btn-lg float-right mr-2 text-danger" id="Profile_likes_count-{{ profile.id }}">{{ profile.rating }}</button>
+      {% endif %}
+
+      <button type="button" data-toggle="button" class="btn btn-outline-success btn-lg float-right mr-2 active js-like" data-toggle="button" aria-pressed="true" autocomplete="off" data-id="{{ profile.id }}" data-content_type="Profile" data-value="1">
+        <i class="far fa-thumbs-up"></i>
+      </button>
     {% else %}
-      <button type="button" class="btn btn-light btn-lg float-right mr-2 text-danger">{{ profile.rating }}</button>
+      <button type="button" data-toggle="button" class="btn btn-outline-danger btn-lg float-right mr-2 active js-like" data-toggle="button" aria-pressed="true" autocomplete="off" data-id="{{ profile.id }}" data-content_type="Profile" data-value="-1">
+        <i class="far fa-thumbs-down"></i>
+      </button>
+
+      {% if profile.rating >= 0 %}
+        <button type="button" class="btn btn-light btn-lg float-right mr-2 text-success" id="Profile_likes_count-{{ profile.id }}">{{ profile.rating }}</button>
+      {% else %}
+        <button type="button" class="btn btn-light btn-lg float-right mr-2 text-danger" id="Profile_likes_count-{{ profile.id }}">{{ profile.rating }}</button>
+      {% endif %}
+
+      <button type="button" data-toggle="button" class="btn btn-outline-success btn-lg float-right mr-2 js-like" data-id="{{ profile.id }}" data-content_type="Profile" data-value="1">
+        <i class="far fa-thumbs-up"></i>
+      </button>
     {% endif %}
-    <button type="button" data-toggle="button" class="btn btn-outline-success btn-lg float-right mr-2">
-      <i class="far fa-thumbs-up"></i>
-    </button>
+
+  {% else %}
+    {% if profile.rating >= 0 %}
+      <button type="button" class="btn btn-light btn-lg float-right mr-2 text-success" id="Profile_likes_count-{{ profile.id }}">{{ profile.rating }}</button>
+    {% else %}
+      <button type="button" class="btn btn-light btn-lg float-right mr-2 text-danger" id="Profile_likes_count-{{ profile.id }}">{{ profile.rating }}</button>
+    {% endif %}
   {% endif %}
 </h1>
 <hr>

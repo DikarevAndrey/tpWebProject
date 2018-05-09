@@ -25,7 +25,7 @@ SECRET_KEY = 'j!_n(89d!_vq0&8tho3$21ne2%xom3n6@2*09!kfa=z1m#^g5y'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+# ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -103,6 +103,18 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION': '/Users/andrey/TechnoPark/WEB/tpWebProject/django_cache',
+        'TIMEOUT': 3600,
+        'OPTIONS': {
+            'MAX_ENTRIES': 1000
+        }
+    }
+}
 
 
 # Internationalization

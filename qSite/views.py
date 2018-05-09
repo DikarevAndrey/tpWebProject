@@ -8,6 +8,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import views as auth_views
 from django.views.decorators.http import require_POST
+from django.db.models import F
 
 
 def paginate(request, objects_list, limit):
@@ -41,6 +42,8 @@ def index(request):
 
 def search(request):
   q = request.GET.get('q')
+  if q == '':
+    return redirect(request.GET.get('back_path'))
   tags = Tag.objects.search(q)
   users = Profile.objects.search(q)
   questions = Question.objects.search(q)
@@ -65,6 +68,7 @@ def question(request, questionId):
   answers = Answer.objects.hottest(questionId)
   page = paginate(request, answers, 30)
   form = AnswerForm(request.POST or None)
+
   if request.method == "POST":
     if form.is_valid():
       answer = form.save(commit=False)
@@ -73,9 +77,11 @@ def question(request, questionId):
       answer.save()
       page_number = answer.get_page()
       return redirect('/qsite/question/' + str(questionId) + '?page=' + str(page_number) + '#answer' + str(answer.id))
+
   if request.method == "GET" and request.user.is_authenticated:
     if question.is_answered_by(request.user):
       form = None
+
   context = {'question': question, 'answers': page.object_list, 'page': page, 'form': form}
   return render(request, 'qSite/question.html', context)
 
@@ -155,30 +161,28 @@ def like(request):
     return JsonResponse({'status': 'error'})
 
   if content_type == 'Question':
-    try:
-      content_object = Question.objects.get(pk=object_id)
-    except Question.DoesNotExist:
-      return JsonResponse({'status': 'error'})
+    content_object = Question.objects.filter(pk=object_id)
+  elif content_type == 'Answer':
+    content_object = Answer.objects.filter(pk=object_id)
   else:
-    try:
-      content_object = Answer.objects.get(pk=object_id)
-    except Answer.DoesNotExist:
-      return JsonResponse({'status': 'error'})
+    content_object = Profile.objects.filter(pk=object_id)
+
+  if not content_object.exists():
+    return JsonResponse({'status': 'error'})
 
   author = request.user
   kwargs = {'author': author, 'content_type__model': content_type, 'object_id': object_id}
+
   newLike = Like.objects.filter(**kwargs)
   if newLike.exists():
     return JsonResponse({'status': 'error'})
   else:
-    Like.objects.create(value=value, author=author, content_object=content_object)
+    Like.objects.create(value=value, author=author, content_object=content_object.first())
 
-  if content_type == 'Question':
-    likes_count = Question.objects.get(pk=object_id).rating
-  else:
-    likes_count = Answer.objects.get(pk=object_id).rating
+  content_object.update(rating=F('rating') + value)
 
-  return JsonResponse({'status': 'ok', 'likes_count': likes_count})
+  return JsonResponse({'status': 'ok', 'likes_count': content_object.first().rating})
+
 
 @require_POST
 def correct(request):

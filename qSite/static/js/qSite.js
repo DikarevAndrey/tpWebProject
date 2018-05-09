@@ -33,6 +33,7 @@ function getCookie(name) {
   return cookieValue;
 }
 
+
 $('.js-like').on('click', function() {
   var $btn = $(this),
     object_id = $btn.data('id'),
@@ -41,8 +42,8 @@ $('.js-like').on('click', function() {
     csrftoken = getCookie('csrftoken');
 
 
-  cur_likes_count = parseInt($('#' + content_type + '_likes_count-' + object_id).text())
-  $('#' + content_type + '_likes_count-' + object_id).text(cur_likes_count + parseInt(value))
+  // cur_likes_count = parseInt($('#' + content_type + '_likes_count-' + object_id).text())
+  // $('#' + content_type + '_likes_count-' + object_id).text(cur_likes_count + parseInt(value))
 
   $.ajax({
     method: "POST",
@@ -59,7 +60,7 @@ $('.js-like').on('click', function() {
     console.log(data);
     if (data.status == 'error') {
       console.log("error statement");
-      $('#' + content_type + '_likes_count-' + object_id).text(cur_likes_count)
+      // $('#' + content_type + '_likes_count-' + object_id).text(cur_likes_count)
     }
     if (data.status == 'ok') {
       console.log("ok statement");

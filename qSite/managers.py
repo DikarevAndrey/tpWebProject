@@ -50,6 +50,7 @@ class QuestionManager(models.Manager):
     return self.filter(tags__name__icontains=_q).order_by('-rating')
     # return self.filter(Q(title__icontains=q) | Q(text__icontains=q))
 
+
 class AnswerManager(models.Manager):
   
   def hottest(self, qid):

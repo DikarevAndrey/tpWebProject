@@ -22,6 +22,14 @@ class SignInForm(AuthenticationForm):
     else:
       return data;
 
+  class Meta:
+    model = Profile
+    fields = ('username', 'password')
+    widgets = {
+      'username': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Login'}),
+      'password': forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Password'}),
+    }
+
 
 class SignUpForm(UserCreationForm):
   password2 = forms.CharField(widget=forms.PasswordInput(attrs={
@@ -52,10 +60,10 @@ class SignUpForm(UserCreationForm):
     model = Profile
     fields = ('username', 'password1', 'password2', 'avatar', 'email')
     widgets = {
-      'username': forms.TextInput(attrs={'class': 'form-control','placeholder': 'Login'}),
-      'password1': forms.PasswordInput(attrs={'class': 'form-control','placeholder': 'Password'}),
-      'password2': forms.PasswordInput(attrs={'class': 'form-control','placeholder': 'Confirm password'}),
-      'email': forms.EmailInput(attrs={'class': 'form-control','placeholder': 'Email'}),
+      'username': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Login'}),
+      'password1': forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Password'}),
+      'password2': forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Confirm password'}),
+      'email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Email'}),
     }
 
 
@@ -116,8 +124,9 @@ class AskForm(ModelForm):
     tags = self.cleaned_data.get('tagsInput')
     super(AskForm, self).save(commit=True)
     for tag in tags:
-      obj, created = Tag.objects.get_or_create(name=tag)
-      self.instance.tags.add(obj)
+      if tag != '':
+        obj, created = Tag.objects.get_or_create(name=tag)
+        self.instance.tags.add(obj)
     return super(AskForm, self).save(commit=commit)
 
 

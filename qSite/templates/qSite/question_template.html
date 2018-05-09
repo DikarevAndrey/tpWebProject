@@ -8,9 +8,11 @@
         <a href="{% url 'profile' question.author.id %}"><img src="{{ question.author.avatar.url }}" alt="avatar" height="42" width="42" class="rounded-circle"></a>
         <a href="{% url 'profile' question.author.id %}">{{ question.author.username }}</a>
         <span class="text-muted"> asks about:</span>
-        {% if answers and user.is_authenticated and question.author != user and form is not None %}
+
+        {% if answers.count >= 0 and user.is_authenticated and question.author != user and form is not None %}
           <button type="button" class="float-right btn btn-link"><a href="#answer_field">Answer this question</a></button>
         {% endif %}
+
         <hr>
         <a href="{% url 'question' question.id %}"><h5 class="card-title">{{ question.title }}</h5></a>
       </div>

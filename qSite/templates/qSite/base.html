@@ -34,8 +34,9 @@
         </ul>
         <ul class="navbar-nav ml-5 w-100 justify-content-center">
           <form class="form-inline mt-2 mt-md-0" method="get" action="{% url 'search' %}">
-            <input class="form-control mr-sm-2" type="text" placeholder="Search..." aria-label="Search" name="q">
-            <button class="btn btn-success navbar-btn" type="submit"><i class="fas fa-search"></i></button>
+            <input class="form-control mr-sm-2" type="text" placeholder="Search..." aria-label="Search" name="q" id="search_input" required>
+            <input type="hidden" name="back_path" value="{{ request.path }}">
+            <button id="search_submit" class="btn btn-success navbar-btn" type="submit"><i class="fas fa-search"></i></button>
           </form>
         </ul>
         {% if user.is_authenticated %}
@@ -95,7 +96,6 @@
             {% endfor %}
           </ul>
         </div>
-        
       </div>
 
     </div>

@@ -10,46 +10,12 @@ from django.db.models import Sum
 from django.dispatch import receiver
 
 
-class Profile(AbstractUser):
-  avatar = models.ImageField(
-    blank=False,
-    default="nobody.jpg",
-    upload_to='uploads/%Y/%m/%d/',
-    verbose_name="Avatar image of the user"
-  )
-  rating = models.IntegerField(default=0, verbose_name="Rating of the user")
-  objects = UserManager()
-  # AbstractUser._meta.get_field('email')._unique = True
-  def get_questions(self):
-    return self.questions.order_by('-creationTime')
-
-  def get_answers(self):
-    return self.answers.order_by('-creationTime')
-
-  def __str__(self):
-    return self.username
-
-  class Meta:
-    ordering = ['-rating']
-
-class Tag(models.Model):
-  name = models.CharField(max_length=15, verbose_name="Name of the tag")
-
-  objects = TagManager()
-
-  def __str__(self):
-    return self.name
-
-  class Meta:
-    ordering = ['name']
-
-
 class Like(models.Model):
   LIKE = 1
   DISLIKE = -1
   VALUES = ((DISLIKE, 'DISLIKE'), (LIKE, 'LIKE'),)
   author = models.ForeignKey(
-    Profile,
+    'Profile',
     null=False,
     verbose_name="Author of the vote",
     on_delete=models.CASCADE
@@ -80,6 +46,55 @@ class Like(models.Model):
     unique_together = ('author', 'content_type', 'object_id',)
 
 
+class Profile(AbstractUser):
+  avatar = models.ImageField(
+    blank=False,
+    default="nobody.jpg",
+    upload_to='uploads/%Y/%m/%d/',
+    verbose_name="Avatar image of the user"
+  )
+
+  likes = GenericRelation(Like, related_query_name='profiles')
+  rating = models.IntegerField(default=0, verbose_name="Rating of the user")
+
+  objects = UserManager()
+  # AbstractUser._meta.get_field('email')._unique = True
+  def get_questions(self):
+    return self.questions.order_by('-creationTime')
+
+  def get_answers(self):
+    return self.answers.order_by('-creationTime')
+
+  def is_liked_by(self, user):
+    like_ = self.likes.filter(author=user)
+    if not like_.exists():
+      return 0
+    else:
+      return like_.first().value
+
+  def update_rating(self):
+    self.rating = self.likes.aggregate(Sum('value')).get('value__sum')
+    self.save(update_fields=['rating'])
+
+  def __str__(self):
+    return self.username
+
+  class Meta:
+    ordering = ['-rating']
+
+
+class Tag(models.Model):
+  name = models.CharField(max_length=15, verbose_name="Name of the tag")
+
+  objects = TagManager()
+
+  def __str__(self):
+    return self.name
+
+  class Meta:
+    ordering = ['name']
+
+
 class Question(models.Model):
   author = models.ForeignKey(
     Profile,
@@ -97,6 +112,7 @@ class Question(models.Model):
   tags = models.ManyToManyField(
     Tag,
     blank=True,
+    null=True,
     verbose_name="Tags of the question",
     related_name='questions'
   )
@@ -114,10 +130,6 @@ class Question(models.Model):
     return self.answer_set.filter(author=user).exists()
 
   def update_rating(self):
-    # print('Update_rating fired!')
-    # like_count = self.likes.filter(value=1).count()
-    # dislike_count = self.likes.filter(value=-1).count()
-    # self.rating = like_count - dislike_count
     self.rating = self.likes.aggregate(Sum('value')).get('value__sum')
     self.save(update_fields=['rating'])
 
@@ -169,10 +181,6 @@ class Answer(models.Model):
     return int(Answer.objects.hottest(self.question.id).filter(rating__gte=self.rating).filter(creationTime__lte=self.creationTime).count() / 30) + 1
 
   def update_rating(self):
-    # print('Update_rating fired!')
-    # like_count = self.likes.filter(value=1).count()
-    # dislike_count = self.likes.filter(value=-1).count()
-    # self.rating = like_count - dislike_count
     self.rating = self.likes.aggregate(Sum('value')).get('value__sum')
     self.save(update_fields=['rating'])
 
@@ -190,12 +198,12 @@ class Answer(models.Model):
     ordering = ['-creationTime']
     # unique_together = ('author', 'question')
 
-@receiver(post_save, sender=Like)
-def update_related_rating_after_save(sender, instance, **kwargs):
-  # print("Received post_save signal!")
-  instance.content_object.update_rating()
+# @receiver(post_save, sender=Like)
+# def update_related_rating_after_save(sender, instance, **kwargs):
+#   # print("Received post_save signal!")
+#   instance.content_object.update_rating()
 
-@receiver(post_delete, sender=Like)
-def update_related_rating_after_delete(sender, instance, **kwargs):
-  # print("Received post_delete signal!")
-  instance.content_object.update_rating()
+# @receiver(post_delete, sender=Like)
+# def update_related_rating_after_delete(sender, instance, **kwargs):
+#   # print("Received post_delete signal!")
+#   instance.content_object.update_rating()
