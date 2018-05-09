@@ -4,3 +4,4 @@ TODO
 my.cnf
 .idea/
 *.pyc
+django_cache/
