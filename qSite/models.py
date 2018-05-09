@@ -112,7 +112,6 @@ class Question(models.Model):
   tags = models.ManyToManyField(
     Tag,
     blank=True,
-    null=True,
     verbose_name="Tags of the question",
     related_name='questions'
   )
