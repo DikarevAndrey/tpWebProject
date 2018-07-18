@@ -1,14 +1,14 @@
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import views as auth_views
+from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator, EmptyPage
+from django.db.models import F
 from django.http import HttpResponse, HttpResponseBadRequest, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
-from random import randint
-from django.core.paginator import Paginator, EmptyPage
-from qSite.models import *
-from qSite.forms import *
-from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth import views as auth_views
 from django.views.decorators.http import require_POST
-from django.db.models import F
+from qSite.forms import *
+from qSite.models import *
+from random import randint
 
 
 def paginate(request, objects_list, limit):

@@ -1,8 +1,8 @@
+# from django.db.models import Q
+from django.contrib.auth.models import UserManager as AbstractUserManager
 from django.db import models
 from django.db.models import Count
 from django.shortcuts import get_object_or_404
-from django.contrib.auth.models import UserManager as AbstractUserManager
-# from django.db.models import Q
 
 class UserManager(AbstractUserManager):
 

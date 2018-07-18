@@ -1,9 +1,9 @@
 from django import forms
-from django.forms import ModelForm
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.core.exceptions import ValidationError
+from django.forms import ModelForm
 from qSite.models import *
 import re
-from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 
 class SignInForm(AuthenticationForm):
   username = forms.CharField(widget=forms.TextInput(attrs={
